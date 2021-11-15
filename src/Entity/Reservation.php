@@ -2,11 +2,18 @@
 
 namespace App\Entity;
 
-use App\Repository\ReservationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ReservationRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ReservationRepository::class)
+ * @ApiResource (
+     *  normalizationContext={
+     *      "groups"={"reservation_read"}
+     *  }
+     * )
  */
 class Reservation
 {
@@ -14,51 +21,62 @@ class Reservation
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"reservation_read","user_read"})
+     * 
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"reservation_read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Groups({"reservation_read"})
      */
     private $phoneNumber;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"reservation_read"})
      */
     private $mail;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"reservation_read"})
      */
     private $nbPerson;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"reservation_read"})
      */
     private $date;
 
     /**
      * @ORM\Column(type="string", length=5)
+     * @Groups({"reservation_read"})
      */
     private $hour;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="reservations")
+     * @Groups({"reservation_read"})
      */
     private $user;
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Groups({"reservation_read"})
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @Groups({"reservation_read"})
      */
     private $updated_at;
 
