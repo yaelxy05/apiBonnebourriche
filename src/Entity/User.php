@@ -14,10 +14,12 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)*
  * @ApiResource (
-     *  normalizationContext={
-     *      "groups"={"user_read"}
-     *  }
-     * )
+ * collectionOperations={"GET", "POST"={"path"="/register"}},
+ * 
+ *  normalizationContext={
+ *      "groups"={"user_read"}
+ *  }
+ * )
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -32,14 +34,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=49, unique=true)
      * @Groups({"user_read","reservation_read"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
-     * @Groups({"user_read"})
+     * 
      */
     private $roles = [];
 
@@ -51,21 +53,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="user")
-     * @Groups({"user_read"})
+     *
      */
     private $reservations;
 
     /**
      * @ORM\Column(type="datetime_immutable")
-     * @Groups({"user_read","reservation_read"})
+     * @Groups({"user_read"})
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
-     * @Groups({"user_read","reservation_read"})
+     * @Groups({"user_read"})
      */
     private $updated_at;
+
+    /**
+     * @ORM\Column(type="string", length=25)
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $address;
+
+    /**
+     * @ORM\Column(type="string", length=20)
+     */
+    private $phoneNumber;
 
     public function __construct()
     {
@@ -212,6 +229,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUpdatedAt(?\DateTimeImmutable $updated_at): self
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getPhoneNumber(): ?string
+    {
+        return $this->phoneNumber;
+    }
+
+    public function setPhoneNumber(string $phoneNumber): self
+    {
+        $this->phoneNumber = $phoneNumber;
 
         return $this;
     }

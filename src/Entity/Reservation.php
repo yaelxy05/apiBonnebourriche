@@ -10,10 +10,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=ReservationRepository::class)
  * @ApiResource (
-     *  normalizationContext={
-     *      "groups"={"reservation_read"}
-     *  }
-     * )
+ * collectionOperations={"GET"={"path"="/reservation"}, "POST"={"path"="/reservation"}},
+ *  normalizationContext={
+ *      "groups"={"reservation_read"}
+ *  }
+ * )
  */
 class Reservation
 {
@@ -27,7 +28,7 @@ class Reservation
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=25)
      * @Groups({"reservation_read"})
      */
     private $name;
@@ -39,10 +40,10 @@ class Reservation
     private $phoneNumber;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=49)
      * @Groups({"reservation_read"})
      */
-    private $mail;
+    private $email;
 
     /**
      * @ORM\Column(type="integer")
@@ -64,13 +65,13 @@ class Reservation
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="reservations")
-     * @Groups({"reservation_read"})
+     * @Groups({"user_read","reservation_read"})
      */
     private $user;
 
     /**
      * @ORM\Column(type="datetime_immutable")
-     * @Groups({"reservation_read"})
+     * 
      */
     private $created_at;
 
@@ -109,14 +110,14 @@ class Reservation
         return $this;
     }
 
-    public function getMail(): ?string
+    public function getEmail(): ?string
     {
-        return $this->mail;
+        return $this->email;
     }
 
-    public function setMail(string $mail): self
+    public function setEmail(string $email): self
     {
-        $this->mail = $mail;
+        $this->email = $email;
 
         return $this;
     }

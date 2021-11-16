@@ -16,6 +16,8 @@ security:
                 property: email
         # used to reload user from session & other features (e.g. switch_user)
     firewalls:
+        register:
+            pattern: ^/api/register
         login:
             pattern: ^/api/login
             stateless: true
@@ -23,12 +25,11 @@ security:
                 check_path: /api/login_check
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
-
         api:
             pattern:   ^/api
             stateless: true
             jwt: ~
-
+        
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -48,5 +49,7 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
     access_control:
+        - { path: ^/api/reservation, roles: PUBLIC_ACCESS }
+        - { path: ^/api/register, roles: PUBLIC_ACCESS }
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
