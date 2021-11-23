@@ -49,7 +49,8 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
     access_control:
-        - { path: ^/api/reservation, roles: PUBLIC_ACCESS }
+        - { path: ^/api/reservations, roles: PUBLIC_ACCESS }
+        - { path: ^/api/reservation/create, roles: PUBLIC_ACCESS }
         - { path: ^/api/register, roles: PUBLIC_ACCESS }
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }

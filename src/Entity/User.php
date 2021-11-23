@@ -13,13 +13,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)*
- * @ApiResource (
- * collectionOperations={"GET", "POST"={"path"="/register"}},
  * 
- *  normalizationContext={
- *      "groups"={"user_read"}
- *  }
- * )
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -28,14 +22,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * 
-     * @Groups({"user_read","reservation_read"})
-     * 
+     * @Groups("user_read","reservation_read")
+     * @Groups("reservation_read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=49, unique=true)
-     * @Groups({"user_read","reservation_read"})
+     * @Groups("user_read")
      */
     private $email;
 
@@ -53,7 +47,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="user")
-     *
      */
     private $reservations;
 
@@ -87,7 +80,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int

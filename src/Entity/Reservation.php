@@ -4,17 +4,11 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ReservationRepository;
-use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ReservationRepository::class)
- * @ApiResource (
- * collectionOperations={"GET"={"path"="/reservation"}, "POST"={"path"="/reservation"}},
- *  normalizationContext={
- *      "groups"={"reservation_read"}
- *  }
- * )
+ * 
  */
 class Reservation
 {
@@ -22,65 +16,70 @@ class Reservation
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"reservation_read","user_read"})
+     * @Groups("reservation_read")
      * 
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=25)
-     * @Groups({"reservation_read"})
+     * @Groups("reservation_read")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=20)
-     * @Groups({"reservation_read"})
+     * @Groups("reservation_read")
      */
     private $phoneNumber;
 
     /**
      * @ORM\Column(type="string", length=49)
-     * @Groups({"reservation_read"})
+     * @Groups("reservation_read")
      */
     private $email;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"reservation_read"})
+     * @Groups("reservation_read")
      */
     private $nbPerson;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"reservation_read"})
+     * @Groups("reservation_read")
      */
     private $date;
 
     /**
      * @ORM\Column(type="string", length=5)
-     * @Groups({"reservation_read"})
+     * @Groups("reservation_read")
      */
     private $hour;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="reservations")
-     * @Groups({"user_read","reservation_read"})
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups("reservation_read")
      */
     private $user;
 
     /**
      * @ORM\Column(type="datetime_immutable")
-     * 
+     * @Groups("reservation_read")
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
-     * @Groups({"reservation_read"})
+     * @Groups({"reservation_read","user_read"})
      */
     private $updated_at;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
     public function getId(): ?int
     {
         return $this->id;

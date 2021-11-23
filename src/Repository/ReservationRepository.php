@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\Reservation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,6 +20,19 @@ class ReservationRepository extends ServiceEntityRepository
         parent::__construct($registry, Reservation::class);
     }
 
+    public function findTaskForOneUser(User $user)
+    {
+        $user = $user->getId();
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT a
+            FROM App\Entity\Reservation a
+            WHERE a.user = ' . $user
+        );
+
+        return $query->getResult();
+    }
     // /**
     //  * @return Reservation[] Returns an array of Reservation objects
     //  */
