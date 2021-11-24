@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/api/register1", name="api_register", methods="POST")
+     * @Route("/api/register", name="api_register", methods="POST")
      */
     public function register(EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder, Request $request, ValidatorInterface $validator, SerializerInterface $serializer): Response
     {
@@ -38,6 +38,7 @@ class UserController extends AbstractController
         // We reassign the password encoded in the User
         $user->setPassword($encodedPassword);
         $user->setRoles(['ROLE_USER']);
+        $user->setCreatedAt(new \DateTimeImmutable());
 
         // We save the user
         $entityManager->persist($user);
