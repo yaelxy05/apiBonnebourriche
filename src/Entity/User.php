@@ -22,7 +22,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * 
-     * @Groups("user_read","reservation_read")
+     * @Groups("user_read")
      * @Groups("reservation_read")
      */
     private $id;
@@ -64,16 +64,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=25)
+     * @Groups({"user_read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"user_read"})
      */
     private $address;
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Groups({"user_read"})
      */
     private $phoneNumber;
 

@@ -20,7 +20,7 @@ class ReservationRepository extends ServiceEntityRepository
         parent::__construct($registry, Reservation::class);
     }
 
-    public function findTaskForOneUser(User $user)
+    public function findReservationForOneUser(User $user)
     {
         $user = $user->getId();
         $entityManager = $this->getEntityManager();

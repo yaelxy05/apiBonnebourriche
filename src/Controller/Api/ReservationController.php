@@ -5,7 +5,6 @@ namespace App\Controller\Api;
 use App\Entity\Reservation;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ReservationRepository;
-use DateTime;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,12 +16,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ReservationController extends AbstractController
 {
     /**
-     * @Route("/api/reservations", name="api_reservation", methods="POST")
+     * @Route("/api/reservations", name="api_reservation")
      */
     public function reservation(ReservationRepository $reservationRepository): Response
     {
         $user = $this->getUser();
-        $reservations = $reservationRepository->findTaskForOneUser($user);
+        $reservations = $reservationRepository->findReservationForOneUser($user);
 
         return $this->json($reservations, 200, [], ['groups' => 'reservation_read']);
     }

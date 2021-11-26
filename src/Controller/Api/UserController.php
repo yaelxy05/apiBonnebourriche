@@ -48,4 +48,15 @@ class UserController extends AbstractController
                 'user' => $user
             ], Response::HTTP_CREATED);
     }
+    /**
+     * @Route("/api/users", name="api_users", methods="GET")
+     */
+    public function user(UserRepository $userRepository): Response
+    {
+        $user = $this->getUser();
+        $users = $userRepository->findByUserField($user);
+       
+
+        return $this->json($users, 200, [], ['groups' => 'user_read']);
+    }
 }
