@@ -10,10 +10,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)*
- * 
+ * @UniqueEntity(fields={"email"}, message="Il y a déjà un compte avec cette email")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -30,6 +32,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=49, unique=true)
      * @Groups("user_read")
+     * @Assert\NotBlank
+     * @Assert\Email(
+     *     message = "Veuillez saisir un email valide."
+     * )
      */
     private $email;
 
@@ -42,6 +48,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank
      */
     private $password;
 
@@ -65,20 +72,58 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=25)
      * @Groups({"user_read"})
+     * @Assert\NotBlank
+     * @Assert\Regex(
+     *     pattern     = "/^[A-Za-zÀ-úœ'\-\s]+$/i",
+     *     htmlPattern = "[A-Za-zÀ-úœ'\-\s]+",
+     *     message="Veuillez saisir un prénom valide."
+     * )
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 25,
+     *      minMessage = "Le nom doit avoir au minimum {{ limit }} caractères",
+     *      maxMessage = "Le nom ne peut avoir plus de {{ limit }} caractères"
+     * )
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"user_read"})
+     * @Assert\NotBlank
+     * 
      */
     private $address;
 
     /**
      * @ORM\Column(type="string", length=20)
      * @Groups({"user_read"})
+     * @Assert\NotBlank
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=true,
+     *     message="Veuillez saisir un numéro de téléphone avec uniquement des chiffres"
+     * )
      */
     private $phoneNumber;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     * @Groups({"user_read"})
+     * @Assert\NotBlank
+     * @Assert\Regex(
+     *     pattern     = "/^[A-Za-zÀ-úœ'\-\s]+$/i",
+     *     htmlPattern = "[A-Za-zÀ-úœ'\-\s]+",
+     *     message="Veuillez saisir un prénom valide."
+     * )
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 25,
+     *      minMessage = "Le prénom doit avoir au minimum {{ limit }} caractères",
+     *      maxMessage = "Le prénom ne peut avoir plus de {{ limit }} caractères"
+     * )
+     */
+    private $nameFirst;
 
     public function __construct()
     {
@@ -261,6 +306,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhoneNumber(string $phoneNumber): self
     {
         $this->phoneNumber = $phoneNumber;
+
+        return $this;
+    }
+
+    public function getNameFirst(): ?string
+    {
+        return $this->nameFirst;
+    }
+
+    public function setNameFirst(string $nameFirst): self
+    {
+        $this->nameFirst = $nameFirst;
 
         return $this;
     }
