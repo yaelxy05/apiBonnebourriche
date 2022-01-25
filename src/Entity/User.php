@@ -32,9 +32,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=49, unique=true)
      * @Groups("user_read")
-     * @Assert\NotBlank
      * @Assert\Email(
-     *     message = "Veuillez saisir un email valide."
+     *     message="Veuillez saisir un email valide."
      * )
      */
     private $email;
@@ -48,7 +47,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Assert\NotBlank
      */
     private $password;
 
@@ -72,7 +70,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=25)
      * @Groups({"user_read"})
-     * @Assert\NotBlank
      * @Assert\Regex(
      *     pattern     = "/^[A-Za-zÀ-úœ'\-\s]+$/i",
      *     htmlPattern = "[A-Za-zÀ-úœ'\-\s]+",
@@ -90,7 +87,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"user_read"})
-     * @Assert\NotBlank
      * 
      */
     private $address;
@@ -98,7 +94,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=20)
      * @Groups({"user_read"})
-     * @Assert\NotBlank
      * @Assert\Regex(
      *     pattern="/\d/",
      *     match=true,
@@ -110,7 +105,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=50)
      * @Groups({"user_read"})
-     * @Assert\NotBlank
      * @Assert\Regex(
      *     pattern     = "/^[A-Za-zÀ-úœ'\-\s]+$/i",
      *     htmlPattern = "[A-Za-zÀ-úœ'\-\s]+",

@@ -25,13 +25,23 @@ class UserController extends AbstractController
         $user = $serializer->deserialize($jsonContent, User::class, 'json');
 
         $errors = $validator->validate($user);
-
+        
+        // If there is at least one error, we return a 400
         if (count($errors) > 0) {
+            $errorsList = [];
+            foreach ($errors as $erreur) {
+                $input = $erreur->getPropertyPath();
+                $errorsList[$input] = $erreur->getMessage();
+            }
 
-            // The array of errors is returned as JSON with an error status 422
-            return $this->json($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
+            return $this->json(
+                [
+                    'error' => $errorsList
+                ],
+                400
+            );
         }
-
+       
         $password = $user->getPassword();
         // This is where we encode the User password (found in $ user)
         $encodedPassword = $passwordEncoder->encodePassword($user, $password);
